@@ -1,3 +1,4 @@
+import 'package:chatapp/screens/chatRoom.dart';
 import 'package:chatapp/screens/signin.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,9 @@ import '../buttons/roundedbutton.dart';
 import '../constant.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  final Function toggle;
+  SignUp(this.toggle);
+  //const SignUp(void Function() toggleView, {Key? key}) : super(key: key);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -28,10 +31,12 @@ class _SignUpState extends State<SignUp> {
         isLoading = true;
       });
       authService
-          .signInWithEmailAndPassword(emailTextEditingController.text,
+          .signUpWithEmailAndPassword(emailTextEditingController.text,
               passwordTextEditingController.text)
           .then((val) {
-        print("$val");
+        // print("${val.uid}");
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const ChatRoom()));
       });
     }
   }
@@ -138,11 +143,7 @@ class _SignUpState extends State<SignUp> {
                               style: kSendButtonTextStyle,
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SignIn()),
-                              );
+                              widget.toggle();
                             },
                           ),
                         )

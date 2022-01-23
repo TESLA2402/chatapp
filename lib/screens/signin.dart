@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import '../buttons/roundedbutton.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+  final Function toggle;
+  SignIn(this.toggle);
+  //const SignIn(void Function() toggleView, {Key? key}) : super(key: key);
 
   @override
   _SignInState createState() => _SignInState();
@@ -68,10 +70,7 @@ class _SignInState extends State<SignIn> {
                     style: kSendButtonTextStyle,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignUp()),
-                    );
+                    widget.toggle();
                   },
                 ),
               )

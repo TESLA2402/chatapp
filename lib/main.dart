@@ -1,5 +1,6 @@
+import 'package:chatapp/helper/authenticate.dart';
 import 'package:chatapp/screens/signin.dart';
-import 'package:chatapp/screens/welcome.dart';
+//import 'package:chatapp/screens/welcome.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Welcome(),
+      home: Authenticate(),
     );
   }
 }
