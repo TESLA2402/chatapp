@@ -1,4 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+PreferredSizeWidget appBarMain(BuildContext context) {
+  return AppBar(
+    backgroundColor: Colors.transparent,
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          "ChatRoom",
+          style: GoogleFonts.roboto(
+            textStyle: const TextStyle(
+              color: Colors.blue,
+              fontSize: 26,
+              //fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    ),
+    elevation: 0.0,
+  );
+}
 
 const kSendButtonTextStyle = TextStyle(
   color: Colors.lightBlueAccent,

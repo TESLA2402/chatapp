@@ -1,6 +1,7 @@
 import 'package:chatapp/screens/chatRoom.dart';
 import 'package:chatapp/screens/signin.dart';
 import 'package:chatapp/services/auth.dart';
+import 'package:chatapp/services/database.dart';
 import 'package:flutter/material.dart';
 
 import '../buttons/roundedbutton.dart';
@@ -17,6 +18,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool isLoading = false;
+  DatabaseMethods databaseMethods = DatabaseMethods();
   AuthService authService = AuthService();
   final formkey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = TextEditingController();
@@ -35,6 +37,11 @@ class _SignUpState extends State<SignUp> {
               passwordTextEditingController.text)
           .then((val) {
         // print("${val.uid}");
+        Map<String, String> userDataMap = {
+          "userName": userNameTextEditingController.text,
+          "userEmail": emailTextEditingController.text
+        };
+        databaseMethods.addUserInfo(userDataMap);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const ChatRoom()));
       });
