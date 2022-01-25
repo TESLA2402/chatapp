@@ -1,8 +1,13 @@
 import 'package:chatapp/constant.dart';
+import 'package:chatapp/helper/shared_preference.dart';
+import 'package:chatapp/screens/chatRoom.dart';
 import 'package:chatapp/screens/signup.dart';
+import 'package:chatapp/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../buttons/roundedbutton.dart';
+import '../services/database.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
@@ -14,6 +19,41 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
+  AuthService authService = AuthService();
+  final formkey = GlobalKey<FormState>();
+  bool isLoading = false;
+  signIn() async {
+    if (formkey.currentState != null) {
+      formkey.currentState?.validate();
+      HelperFunctions.saveUserEmailSharedPreference(
+          emailTextEditingController.text);
+    }
+
+    {
+      setState(() {
+        isLoading = true;
+      });
+      await authService
+          .signInWithEmailAndPassword(emailTextEditingController.text,
+              passwordTextEditingController.text)
+          .then((result) async {
+        if (result != null) {
+          QuerySnapshot userInfoSnapshot = await DatabaseMethods()
+              .getUserInfo(emailTextEditingController.text);
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          HelperFunctions.saveUserNameSharedPreference(
+              userInfoSnapshot.docs[0]["userName"]);
+          HelperFunctions.saveUserEmailSharedPreference(
+              userInfoSnapshot.docs[0]["userEmail"]);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,17 +66,35 @@ class _SignInState extends State<SignIn> {
             const SizedBox(
               height: 48,
             ),
-            TextField(
-              decoration: kTextFieldDecoration.copyWith(hintText: 'email'),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            TextField(
-              decoration: kTextFieldDecoration.copyWith(hintText: 'password'),
-            ),
-            const SizedBox(
-              height: 8,
+            Form(
+              key: formkey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    validator: (val) {
+                      return RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(val!)
+                          ? null
+                          : "Please Enter Correct Email";
+                    },
+                    controller: emailTextEditingController,
+                    decoration:
+                        kTextFieldDecoration.copyWith(hintText: 'email'),
+                  ),
+                  TextFormField(
+                    obscureText: true,
+                    validator: (val) {
+                      return val!.length > 6
+                          ? null
+                          : "Enter Password 6+ characters";
+                    },
+                    controller: passwordTextEditingController,
+                    decoration:
+                        kTextFieldDecoration.copyWith(hintText: 'password'),
+                  ),
+                ],
+              ),
             ),
             Container(
                 alignment: Alignment.centerRight,
@@ -62,16 +120,21 @@ class _SignInState extends State<SignIn> {
                 padding: const EdgeInsets.only(left: 60),
                 child: const Text("Dont't have account?"),
               ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: TextButton(
-                  child: const Text(
-                    "SignIn",
-                    style: kSendButtonTextStyle,
+              GestureDetector(
+                onTap: () {
+                  signIn();
+                },
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: TextButton(
+                    child: const Text(
+                      "SignIn",
+                      style: kSendButtonTextStyle,
+                    ),
+                    onPressed: () {
+                      widget.toggle();
+                    },
                   ),
-                  onPressed: () {
-                    widget.toggle();
-                  },
                 ),
               )
             ])
