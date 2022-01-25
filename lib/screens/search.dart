@@ -15,20 +15,21 @@ class _SearchState extends State<Search> {
   DatabaseMethods databaseMethods = DatabaseMethods();
   TextEditingController searchTextEditingController = TextEditingController();
   bool haveUserSearched = false;
+
   Widget searchlist() {
     return haveUserSearched
         ? ListView.builder(
-            itemCount: searchSnapshot.docs.length,
+            itemCount: searchSnapshot!.docs.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return SearchTile(
-                  userName: searchSnapshot.docs[index]['userName'],
-                  userEmail: searchSnapshot.docs[index]['userEmail']);
+                  userName: searchSnapshot!.docs[index]['userName'],
+                  userEmail: searchSnapshot!.docs[index]['userEmail']);
             })
         : Container();
   }
 
-  late QuerySnapshot searchSnapshot;
+  QuerySnapshot? searchSnapshot;
   initiateSearch() async {
     databaseMethods.searchByName(searchTextEditingController.text).then((val) {
       setState(() {
@@ -60,26 +61,30 @@ class _SearchState extends State<Search> {
                     decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Search Username...'),
                   )),
-                  Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                              colors: [Color(0x36FFFFFF), Color(0x0FFFFFFF)],
-                              begin: FractionalOffset.topLeft,
-                              end: FractionalOffset.bottomRight),
-                          borderRadius: BorderRadius.circular(40)),
-                      padding: const EdgeInsets.all(12),
-                      child: IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () {
-                          initiateSearch();
-                        },
-                      )),
-                  searchlist()
+                  GestureDetector(
+                    onTap: () {
+                      initiateSearch();
+                    },
+                    child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                                colors: [Color(0x36FFFFFF), Color(0x0FFFFFFF)],
+                                begin: FractionalOffset.topLeft,
+                                end: FractionalOffset.bottomRight),
+                            borderRadius: BorderRadius.circular(40)),
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          "assets/images/search-black.png",
+                          height: 25,
+                          width: 25,
+                        )),
+                  )
                 ],
               ),
-            )
+            ),
+            searchlist()
           ],
         ),
       ),
@@ -112,9 +117,9 @@ class SearchTile extends StatelessWidget {
               //sendMessage(userName);
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(24)),
+                  color: Colors.blue, borderRadius: BorderRadius.circular(30)),
               child: const Text(
                 "Message",
                 style: TextStyle(color: Colors.white, fontSize: 16),
