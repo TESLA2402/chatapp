@@ -21,7 +21,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool? userIsLoggedIn;
+  bool? userIsLoggedIn = false;
 
   @override
   void initState() {
@@ -41,18 +41,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: userIsLoggedIn != null
-          ? ChatRoom()
-          : Container(
-              child: Center(
-                child: Authenticate(),
-              ),
-            ),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: userIsLoggedIn != null ? const ChatRoom() : Authenticate());
   }
 }

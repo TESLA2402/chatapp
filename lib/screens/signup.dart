@@ -40,17 +40,21 @@ class _SignUpState extends State<SignUp> {
               passwordTextEditingController.text)
           .then((val) {
         // print("${val.uid}");
-        Map<String, String> userDataMap = {
-          "userName": userNameTextEditingController.text,
-          "userEmail": emailTextEditingController.text
-        };
-        HelperFunctions.saveUserEmailSharedPreference(
-            emailTextEditingController.text);
-        HelperFunctions.saveUserNameSharedPreference(
-            userNameTextEditingController.text);
-        databaseMethods.addUserInfo(userDataMap);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const ChatRoom()));
+        if (val != null) {
+          Map<String, String> userDataMap = {
+            "userName": userNameTextEditingController.text,
+            "userEmail": emailTextEditingController.text
+          };
+          databaseMethods.addUserInfo(userDataMap);
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          HelperFunctions.saveUserEmailSharedPreference(
+              emailTextEditingController.text);
+          HelperFunctions.saveUserNameSharedPreference(
+              userNameTextEditingController.text);
+
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const ChatRoom()));
+        }
       });
     }
   }
@@ -70,8 +74,9 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
+                      Image.asset("assets/images/logo.png"),
                       const SizedBox(
-                        height: 48,
+                        height: 30,
                       ),
                       TextFormField(
                         validator: (val) {

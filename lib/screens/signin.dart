@@ -70,6 +70,7 @@ class _SignInState extends State<SignIn> {
               key: formkey,
               child: Column(
                 children: [
+                  Image.asset("assets/images/logo.png"),
                   TextFormField(
                     validator: (val) {
                       return RegExp(
@@ -81,6 +82,9 @@ class _SignInState extends State<SignIn> {
                     controller: emailTextEditingController,
                     decoration:
                         kTextFieldDecoration.copyWith(hintText: 'email'),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   TextFormField(
                     obscureText: true,
@@ -108,7 +112,9 @@ class _SignInState extends State<SignIn> {
             ),
             Container(
                 child: RoundedButton(
-              onPressed: () {},
+              onPressed: () {
+                signIn();
+              },
               text: 'Log In',
               colour: Colors.teal.shade400,
             )),
@@ -120,23 +126,18 @@ class _SignInState extends State<SignIn> {
                 padding: const EdgeInsets.only(left: 60),
                 child: const Text("Dont't have account?"),
               ),
-              GestureDetector(
-                onTap: () {
-                  signIn();
-                },
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  child: TextButton(
-                    child: const Text(
-                      "SignIn",
-                      style: kSendButtonTextStyle,
-                    ),
-                    onPressed: () {
-                      widget.toggle();
-                    },
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: TextButton(
+                  child: const Text(
+                    "SignIn",
+                    style: kSendButtonTextStyle,
                   ),
+                  onPressed: () {
+                    widget.toggle();
+                  },
                 ),
-              )
+              ),
             ])
           ],
         ),

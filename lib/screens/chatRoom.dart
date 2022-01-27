@@ -1,6 +1,7 @@
 import 'package:chatapp/screens/search.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../helper/authenticate.dart';
 import '../helper/constants.dart';
@@ -16,28 +17,28 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
-  /*Stream? chatRooms;
+  Stream? chatRooms;
   Widget chatRoomsList() {
     return StreamBuilder(
       stream: chatRooms,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return ChatRoomsTile(
-                    userName: snapshot.data!.docs[index].data['chatRoomId']
+                    userName: snapshot.data!.docs[index]['chatroomId']
                         .toString()
                         .replaceAll("_", "")
                         .replaceAll(Constants.myName, ""),
-                    chatRoomId: snapshot.data!.docs[index].data["chatRoomId"],
+                    chatRoomId: snapshot.data!.docs[index]['chatroomId'],
                   );
                 })
             : Container();
       },
     );
-  }*/
+  }
 
   @override
   void initState() {
@@ -49,7 +50,11 @@ class _ChatRoomState extends State<ChatRoom> {
   getUserInfogetChats() async {
     Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
     DatabaseMethods().getUserChats(Constants.myName).then((snapshots) {
-      setState(() {});
+      setState(() {
+        chatRooms = snapshots;
+        print(
+            "we got the data + ${chatRooms.toString()} this is name  ${Constants.myName}");
+      });
     });
   }
 
@@ -57,6 +62,22 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "ChatRoom",
+              style: GoogleFonts.roboto(
+                textStyle: const TextStyle(
+                  color: Colors.blue,
+                  fontSize: 26,
+                  //fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
         actions: [
           GestureDetector(
             onTap: () {
@@ -71,7 +92,11 @@ class _ChatRoomState extends State<ChatRoom> {
           )
         ],
       ),
+      body: Container(
+        child: chatRoomsList(),
+      ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
         child: const Icon(Icons.search),
         onPressed: () {
           Navigator.push(
@@ -93,10 +118,22 @@ class ChatRoomsTile extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Chat()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Chat(
+                      chatRoomId: chatRoomId,
+                    )));
       },
       child: Container(
-        color: Colors.black26,
+        margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.black,
+            width: 6,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         child: Row(
           children: [
@@ -104,9 +141,8 @@ class ChatRoomsTile extends StatelessWidget {
               height: 30,
               width: 30,
               decoration: BoxDecoration(
-                  //color: CustomTheme.colorAccent,
-                  borderRadius: BorderRadius.circular(30)),
-              child: Text(userName.substring(0, 1),
+                  color: Colors.black, borderRadius: BorderRadius.circular(30)),
+              child: Text(userName.substring(0, 1).toUpperCase(),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                       color: Colors.white,
@@ -117,13 +153,15 @@ class ChatRoomsTile extends StatelessWidget {
             const SizedBox(
               width: 12,
             ),
-            Text(userName,
+            Text(userName.toUpperCase(),
                 textAlign: TextAlign.start,
-                style: const TextStyle(
-                    color: Colors.white,
+                style: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                    color: Colors.black,
                     fontSize: 16,
-                    fontFamily: 'OverpassRegular',
-                    fontWeight: FontWeight.w300))
+                    //fontWeight: FontWeight.bold,
+                  ),
+                ))
           ],
         ),
       ),

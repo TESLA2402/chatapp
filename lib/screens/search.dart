@@ -3,6 +3,7 @@ import 'package:chatapp/screens/chats.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constant.dart';
 
@@ -50,12 +51,16 @@ class _SearchState extends State<Search> {
       String chatRoomId = getChatRoomId(userName, Constants.myName);
       List<String> users = [Constants.myName, userName];
       Map<String, dynamic> chatRoomMap = {
+        "chatroomId": chatRoomId,
         "users": users,
-        "chatroomId": chatRoomId
       };
       databaseMethods.addChatRoom(chatRoomMap, chatRoomId);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Chat()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => Chat(
+                    chatRoomId: chatRoomId,
+                  )));
     } else {
       print("you cannot send message to yourself");
     }
@@ -63,17 +68,37 @@ class _SearchState extends State<Search> {
 
   Widget SearchTile(String userName, String userEmail) {
     return Container(
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black,
+          width: 6,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                userName,
-                style: kSendButtonTextStyle,
-              ),
-              Text(userEmail, style: kSendButtonTextStyle),
+              Text(userName.toUpperCase(),
+                  style: GoogleFonts.roboto(
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  )),
+              Text(userEmail,
+                  style: GoogleFonts.roboto(
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  )),
             ],
           ),
           const Spacer(),
@@ -84,7 +109,7 @@ class _SearchState extends State<Search> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(30)),
+                  color: Colors.black, borderRadius: BorderRadius.circular(30)),
               child: const Text(
                 "Message",
                 style: TextStyle(color: Colors.white, fontSize: 16),
