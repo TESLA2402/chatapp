@@ -74,7 +74,14 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Image.asset("assets/images/logo.png"),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      const Image(
+                        height: 194,
+                        width: 200,
+                        image: AssetImage("assets/images/logo.png"),
+                      ),
                       const SizedBox(
                         height: 30,
                       ),

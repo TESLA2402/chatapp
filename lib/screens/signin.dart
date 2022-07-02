@@ -57,6 +57,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -70,7 +71,11 @@ class _SignInState extends State<SignIn> {
               key: formkey,
               child: Column(
                 children: [
-                  Image.asset("assets/images/logo.png"),
+                  const Image(
+                    height: 194,
+                    width: 200,
+                    image: AssetImage("assets/images/logo.png"),
+                  ),
                   TextFormField(
                     validator: (val) {
                       return RegExp(
