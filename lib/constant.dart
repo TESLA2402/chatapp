@@ -4,6 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 PreferredSizeWidget appBarMain(BuildContext context) {
   return AppBar(
     backgroundColor: Colors.transparent,
+    leading: GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: const Icon(
+        Icons.arrow_back,
+        color: Colors.black,
+      ),
+    ),
     title: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -11,7 +20,7 @@ PreferredSizeWidget appBarMain(BuildContext context) {
           "ChatRoom",
           style: GoogleFonts.roboto(
             textStyle: const TextStyle(
-              color: Colors.blue,
+              color: Color.fromARGB(255, 172, 235, 174),
               fontSize: 26,
               //fontWeight: FontWeight.bold,
             ),
