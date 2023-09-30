@@ -3,6 +3,7 @@
 #
 # This file should be version controlled and should not be manually edited.
 
+# version details
 version:
   revision: 8f1f9c10f04b8f106d78275e93ceead8ea837d8b
   channel: beta

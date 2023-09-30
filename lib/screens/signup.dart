@@ -1,6 +1,5 @@
 import 'package:chatapp/helper/shared_preference.dart';
 import 'package:chatapp/screens/chatRoom.dart';
-import 'package:chatapp/screens/signin.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:flutter/material.dart';

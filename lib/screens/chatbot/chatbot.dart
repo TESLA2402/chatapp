@@ -21,7 +21,6 @@ class _ChatScreenState extends State<ChatScreen> {
   List<String> replies = [];
   TextEditingController userMessage = TextEditingController();
   StreamController chatController = StreamController();
-  final ScrollController _controller = ScrollController();
 
 // This is what you're looking for!
 
